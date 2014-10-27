@@ -62,6 +62,39 @@ function displayMarker(thisID, thisDisplay) {
 	}
 }
 
+function scrollArrowShow() {
+        var maxScroll = ($('#timeline ul').width() - $('#timeline').scrollLeft()) - $('#timeline').width();
+        if ( 0 == $('#timeline').scrollLeft()) {
+            $('#leftArrow').fadeOut();
+        }else{
+            $('#leftArrow').fadeIn();
+        }
+        if ( 0 == maxScroll) {
+            $('#rightArrow').fadeOut();
+        }else{
+            $('#rightArrow').fadeIn();
+        }
+    }
+
+function scrollThumb(direction) {
+        if (direction=='left') {
+            $('#timeline').animate({
+                scrollLeft: "-=" + 600 + "px"
+            }, function(){
+                // createCookie('scrollPos', $('#slide-wrap').scrollLeft());
+                scrollArrowShow();
+            });
+        }else
+        if (direction=='right') {
+            $('#timeline').animate({
+                scrollLeft: "+=" + 600 + "px"
+            }, function(){
+                // createCookie('scrollPos', $('#slide-wrap').scrollLeft());
+                scrollArrowShow();
+            });
+        }
+       }
+
 // No custom Google animations available between markers
 // So custom code to zoom out, then pan to next marker
 function zoomToMarker(thisID) {
@@ -81,20 +114,27 @@ function zoomToMarker(thisID) {
 			setTimeout(function(){
 				thisMap.panTo(thisMarker.getPosition());
 				setTimeout(function(){
+					var thisPoint = thisMap.getProjection().fromLatLngToPoint(thisMarker.getPosition());
 					thisMap.setZoom(macroZoom);
-					thisMap.panBy(150, -18);
 					$('#infoWindow').html(coords[thisID].infoWin);
+					setTimeout(function(){
 					$('#infoWindow').show('slide',{direction:'right'}, 200);
+					thisMap.panTo(thisMap.getProjection().fromPointToLatLng(new google.maps.Point(
+						thisPoint.x + 0.128,
+						thisPoint.y - 0.0
+					)));
+					}, 250);
 					$('#resetMap').fadeIn();
 				}, panDelay);
 			}, panDelay);
 		}
 	}	
-function generateTimeline(startYear, endYear, thisZoom) {
+function generateTimeline(startYear, endYear, thisScale) {
 	if (!startYear) startYear = 1650;
 	if (!endYear) endYear = todaysDate.getFullYear();
-	if (!thisZoom) thisZoom = 2;
-		
+	if (!thisScale) thisScale = 2;
+	
+	zoomToMarker("center");
 	$('#timeline').html("");
 	
 	radioButtons = "<hr/><ul>\r\n";
@@ -111,7 +151,7 @@ function generateTimeline(startYear, endYear, thisZoom) {
 		} 
 		if(thisYear > startYear && thisYear < endYear) {
 			if (activeMarkers > 0) {
-				var thisWidth = (thisYear - prevYear)*thisZoom;
+				var thisWidth = (thisYear - prevYear)*thisScale;
 				css = 'style="margin-left:';
 				css += thisWidth + 'px;"';
 				totalWidth += thisWidth + 66;
@@ -161,5 +201,6 @@ $(function() {
 	});
 	coords.sort(function(a,b) { return parseFloat(a.date.getFullYear()) - parseFloat(b.date.getFullYear()) } );
 	generateTimeline();
+	scrollArrowShow();
 	
 });
