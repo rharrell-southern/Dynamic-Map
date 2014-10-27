@@ -51,9 +51,17 @@ function setMapMarker(thisID, thisLat, thisLng) {
 			lng:thisLng
 		},
 		icon: 'images/dinoicon.png'
+		
 	});
+	google.maps.event.addListener(markers[thisID], 'click', function() {
+		if (thisMap.getZoom() <= (wideZoom + 1)) {
+			zoomToMarker(thisID);
+		}
+  	});
+
 	markers[thisID].setMap(thisMap);
 }
+
 function displayMarker(thisID, thisDisplay) {
 	if(thisDisplay) {
 		markers[thisID].setMap(thisMap);
@@ -81,7 +89,6 @@ function scrollThumb(direction) {
             $('#timeline').animate({
                 scrollLeft: "-=" + 600 + "px"
             }, function(){
-                // createCookie('scrollPos', $('#slide-wrap').scrollLeft());
                 scrollArrowShow();
             });
         }else
@@ -89,7 +96,6 @@ function scrollThumb(direction) {
             $('#timeline').animate({
                 scrollLeft: "+=" + 600 + "px"
             }, function(){
-                // createCookie('scrollPos', $('#slide-wrap').scrollLeft());
                 scrollArrowShow();
             });
         }
@@ -107,9 +113,22 @@ function zoomToMarker(thisID) {
 			setTimeout(function(){
 				thisMap.panTo(mapCenter);
 			}, panDelay);
+			$('#timeline ul li input[type="radio"]').each(function() {
+				$(this).prop('checked', false);
+			});
 		} else {
 			var thisMarker = markers[thisID];
 			thisMap.setZoom(wideZoom);
+			
+			var liIndex = 0;
+			$('#timeline ul li input[type="radio"]').each(function() {
+				if (liIndex != thisID) {
+					$(this).prop('checked', false);
+				} else {
+					$(this).prop('checked', true);
+				}
+				liIndex++;
+			});
 			
 			setTimeout(function(){
 				thisMap.panTo(thisMarker.getPosition());
@@ -128,12 +147,14 @@ function zoomToMarker(thisID) {
 				}, panDelay);
 			}, panDelay);
 		}
-	}	
+	}
+		
 function generateTimeline(startYear, endYear, thisScale) {
 	if (!startYear) startYear = 1650;
 	if (!endYear) endYear = todaysDate.getFullYear();
 	if (!thisScale) thisScale = 2;
 	
+	// Zoom out, clear timeline to make space for new list
 	zoomToMarker("center");
 	$('#timeline').html("");
 	
@@ -157,9 +178,8 @@ function generateTimeline(startYear, endYear, thisScale) {
 				totalWidth += thisWidth + 66;
 			}
 			displayMarker(i, true);
-			radioButtons += '<li '+css+'><label>'+(coords[i].date.getFullYear()+1)+'<br /><input type="radio" name="facts" onClick="zoomToMarker('+i+')"></label></li>\r\n';  //<label>'+(coords[i].date.getFullYear()+1)+': '+coords[i].title+'<br />
+			radioButtons += '<li '+css+'><label>'+(coords[i].date.getFullYear()+1)+'<br /><input type="radio" name="facts" onClick="zoomToMarker('+i+')"></label></li>\r\n';
 			activeMarkers++;
-			console.log(activeMarkers);
 		}	else {
 				displayMarker(i, false);
 		}
@@ -169,6 +189,7 @@ function generateTimeline(startYear, endYear, thisScale) {
 	$("#timeline").append(radioButtons);
 	$('#timeline ul').css({width: totalWidth+"px"});
 }
+
 (function (window, google) {
 	//thisMap options
 	var options = {
@@ -186,6 +207,7 @@ function generateTimeline(startYear, endYear, thisScale) {
 		thisMap = new google.maps.Map(element, options);
 }(window, google));
 
+// Receive Start/End Dates from User, Pass to GenerateTimeline
 $(function() {
 	for (i=1650; i<=todaysDate.getFullYear(); i++) {
 		if(i % yearIncrements === 0 || i == todaysDate.getFullYear()) {
