@@ -1,0 +1,96 @@
+@charset "UTF-8";
+/* CSS Document */
+
+body {
+	width:100%;
+	padding:0;
+	margin:0;
+	font-family: sans-serif;
+	color:#333;
+	background-color:#999;
+}
+header h1 {
+	float:left;
+	padding-left:35px;
+}
+#selectRanges {
+	padding:30px 25px;
+	text-align:right;
+}
+#container {
+	width:800px;
+	margin:0 auto;
+	position:relative;
+	border:1px thin grey;
+	background-color:#FFF;
+	margin-top:35px;
+	box-shadow:0px 0px 60px #666;
+	border-radius: 15px;
+}
+#map-canvas {
+	height:380px;
+	clear:both;
+}
+#timeline {
+	height:80px;
+	overflow:auto;
+}
+#timeline hr {
+	position:absolute;
+	bottom:28px;
+	height:6px;
+	width:800px;
+	border:0;
+	background-color:#CCC;
+}
+#timeline ul {
+	position:relative;
+	top:30px;
+	padding:0px;
+	margin:0px;
+}
+#timeline ul li {
+	list-style:none;
+	display:inline-block;
+	text-align:center;
+	padding:0px 15px;
+	margin-top:-55px;
+}
+#infoWindow {
+	display:none;
+	width:284px; /* makes box align with Google copyright at bottom */
+	height:380px;
+	background:rgba(255,255,255,0.8);
+	position:absolute;
+	top:80px;
+	right:0px;
+}
+#infoWindow h2 {
+	background:rgba(0,0,0,0.5);
+	font-size:22px;
+	color:#FFF;
+	padding:15px;
+	margin:0;
+	height:25px;
+}
+#infoWindow p {
+	margin-top: 15px;
+}
+#infoWindow img {
+	width:270px;
+}
+#infoWindow div { /* div containing p */
+	padding:15px;
+	overflow: auto;
+	height:275px;
+}
+#resetMap {
+	display:none;
+	position:absolute;
+	top:80px;
+	left:0px;
+	background:rgba(255,255,255,0.7);
+	padding:8px;
+	color:#333;
+	cursor:pointer;
+}
