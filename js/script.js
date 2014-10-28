@@ -36,6 +36,7 @@ var wideZoom = 2;	// Set default zoom level for initial map
 var macroZoom = 10;	// Set zoom for close up to pin
 var panDelay = 500 	// change the delay when zooming in and out to allow panning animation
 var yearIncrements = 50; //set the increments for the start and end selections
+var timelineScale = 2;
 
 
 // Set Global Variables		   
@@ -43,7 +44,13 @@ var markers = new Array();
 var radioButtons;
 var thisMap;
 var todaysDate = new Date(); // This year, 2014
-	
+
+
+
+// ################################################################## //
+// ############# SET MARKERS, ICON, CLICKABLE, DISPLAY ############## //
+// ################################################################## //
+
 function setMapMarker(thisID, thisLat, thisLng) {
 	markers[thisID] = new google.maps.Marker({
 		position: {
@@ -70,6 +77,13 @@ function displayMarker(thisID, thisDisplay) {
 	}
 }
 
+
+
+// ################################################################## //
+// #################### TIMELINESCROLL CONTROLS ##################### //
+// ################################################################## //
+
+// Show arrows based on timeline position
 function scrollArrowShow() {
         var maxScroll = ($('#timeline ul').width() - $('#timeline').scrollLeft()) - $('#timeline').width();
         if ( 0 == $('#timeline').scrollLeft()) {
@@ -82,8 +96,9 @@ function scrollArrowShow() {
         }else{
             $('#rightArrow').fadeIn();
         }
-    }
+}
 
+// leftArrow and rightArrow have onClicks in HTML that sends data to scrollThuumb
 function scrollThumb(direction) {
         if (direction=='left') {
             $('#timeline').animate({
@@ -99,10 +114,16 @@ function scrollThumb(direction) {
                 scrollArrowShow();
             });
         }
-       }
+}
 
-// No custom Google animations available between markers
-// So custom code to zoom out, then pan to next marker
+
+
+// ################################################################## //
+// ###### NO CUSTOM GOOGLE ANIMATIONS, SO WE MADE ZOOMTOMARKER ###### //
+// ##### CONTROLS INFOWINDOWS, RESET MAP, WHICH RADIO IS CHECKED #### //
+// ########### CONTROLS SCROLLBAR WHEN USER CLICKS ON ICON ########## //
+// ################################################################## //
+
 function zoomToMarker(thisID) {
 		
 		$('#infoWindow').hide('slide',{direction:'right'}, 200);
@@ -115,8 +136,32 @@ function zoomToMarker(thisID) {
 			}, panDelay);
 			$('#timeline ul li input[type="radio"]').each(function() {
 				$(this).prop('checked', false);
+				$(this).parent().removeClass('active');
 			});
 		} else {
+			var dateGap = (coords[thisID].date.getFullYear() - coords[0].date.getFullYear()) * timelineScale;
+			dateGap += (66 * (thisID) );
+			console.log(dateGap);
+			
+			
+			//math.round rounds up to the nearest interger, math.floor rounds down
+			var targetDistance = dateGap / 600;
+			var currentDistance = $('#timeline').scrollLeft()/600;
+			console.log("Scroll Distance: " + targetDistance);
+			console.log("Current Scroll" + currentDistance);
+			
+			setTimeout (function() {
+				if (targetDistance > currentDistance) {
+					for(var i=currentDistance;i<targetDistance; i++) {
+						scrollThumb('right');
+					}
+				} else if(targetDistance < currentDistance){
+					for(var i=currentDistance;i>targetDistance; i--) {
+						scrollThumb('left');
+					}
+				} 
+			}, 522);
+			
 			var thisMarker = markers[thisID];
 			thisMap.setZoom(wideZoom);
 			
@@ -124,8 +169,10 @@ function zoomToMarker(thisID) {
 			$('#timeline ul li input[type="radio"]').each(function() {
 				if (liIndex != thisID) {
 					$(this).prop('checked', false);
+					$(this).parent().removeClass("active");
 				} else {
 					$(this).prop('checked', true);
+					$(this).parent().addClass("active");
 				}
 				liIndex++;
 			});
@@ -147,12 +194,18 @@ function zoomToMarker(thisID) {
 				}, panDelay);
 			}, panDelay);
 		}
-	}
+}
 		
-function generateTimeline(startYear, endYear, thisScale) {
+
+
+// ################################################################## //
+// ############### GENERATE TIMELINE & RADIO BUTTONS ################ //
+// ################################################################## //
+
+function generateTimeline(startYear, endYear) {
 	if (!startYear) startYear = 1650;
 	if (!endYear) endYear = todaysDate.getFullYear();
-	if (!thisScale) thisScale = 2;
+	thisScale = timelineScale;
 	
 	// Zoom out, clear timeline to make space for new list
 	zoomToMarker("center");
@@ -190,6 +243,12 @@ function generateTimeline(startYear, endYear, thisScale) {
 	$('#timeline ul').css({width: totalWidth+"px"});
 }
 
+
+
+// ################################################################## //
+// ################ SET GOOGLE MAPS OPTIONS AND API ################# //
+// ################################################################## //
+
 (function (window, google) {
 	//thisMap options
 	var options = {
@@ -197,6 +256,7 @@ function generateTimeline(startYear, endYear, thisScale) {
 		center: mapCenter,
 		zoom: wideZoom,
 		disableDefaultUI:true,
+		//mapTypeId: google.maps.MapTypeId.HYBRID,
 		
 		//styling from SnazzyMaps		
 		styles: [{"stylers":[{"saturation":-45},{"lightness":13}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#8fa7b3"}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"color":"#667780"}]},{"featureType":"road.highway","elementType":"labels.text.fill","stylers":[{"color":"#333333"}]},{"featureType":"road.highway","elementType":"labels.text.stroke","stylers":[{"color":"#8fa7b3"},{"gamma":2}]},{"featureType":"road.arterial","elementType":"geometry.fill","stylers":[{"color":"#a3becc"}]},{"featureType":"road.arterial","elementType":"geometry.stroke","stylers":[{"color":"#7a8f99"}]},{"featureType":"road.arterial","elementType":"labels.text.fill","stylers":[{"color":"#555555"}]},{"featureType":"road.local","elementType":"geometry.fill","stylers":[{"color":"#a3becc"}]},{"featureType":"road.local","elementType":"geometry.stroke","stylers":[{"color":"#7a8f99"}]},{"featureType":"road.local","elementType":"labels.text.fill","stylers":[{"color":"#555555"}]},{"featureType":"water","elementType":"geometry.fill","stylers":[{"color":"#bbd9e9"}]},{"featureType":"administrative","elementType":"labels.text.fill","stylers":[{"color":"#525f66"}]},{"featureType":"transit","elementType":"labels.text.stroke","stylers":[{"color":"#bbd9e9"},{"gamma":2}]},{"featureType":"transit.line","elementType":"geometry.fill","stylers":[{"color":"#a3aeb5"}]}]
@@ -207,7 +267,12 @@ function generateTimeline(startYear, endYear, thisScale) {
 		thisMap = new google.maps.Map(element, options);
 }(window, google));
 
-// Receive Start/End Dates from User, Pass to GenerateTimeline
+
+
+// ################################################################## //
+// # RECEIVE START/END DATES FROM USER, PASS TO GENERATETIMELINE()  # //
+// ################################################################## //
+
 $(function() {
 	for (i=1650; i<=todaysDate.getFullYear(); i++) {
 		if(i % yearIncrements === 0 || i == todaysDate.getFullYear()) {

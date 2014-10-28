@@ -55,6 +55,8 @@ header h1 {
 	text-align:center;
 	padding:0px 15px;
 	margin-top:-55px;
+	width:36px;
+	height:37px;
 }
 #infoWindow {
 	display:none;
@@ -124,4 +126,13 @@ header h1 {
   	background: linear-gradient(to left, rgba(0,0,0,0.2) , transparent); /* Standard syntax */
 	padding-right:8px !important;
 	text-align:right;
+}
+
+.active {
+	font-size:22px;
+	font-weight:bold;
+	position:relative;
+	top: 0px;
+	margin:0px -4px;
+	line-height:4px;
 }
