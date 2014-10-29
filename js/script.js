@@ -2,30 +2,61 @@
 var coords = [ { date: new Date("1677"), 
 			 title: "An Elephant?",
 			 lat:51.75, lng:-1.28,
-			 infoWin:   "<h2>Oxfordshire, England</h2>" + 
-						"<div><img src='images/two.jpg' /><p>The county was home to some of the most important finds during the pivotal early years in the study of palaeontology.</p></div>"
+			 infoWin:   /* Header ----*/   "<h2>Oxfordshire, England</h2>" 
+						/* Start DIV -*/ + "<div>"
+						/* Image -----*/ + "<img src='images/1677.jpg' />"
+						/* Paragraphs */ + "<p>The county was home to some of the most important finds during the pivotal early years in the study of palaeontology. Dinosaurs roamed the local landscape from the middle and upper parts of the Jurassic period, between 170 and 150 million years ago.</p>" + "<p>The earliest account we have a proper record of is in Robert Plot's Natural History of Oxfordshire that was published in 1677, and in that he illustrated what we would now recognise as the end of a dinosaur limb bone.</p>" + "<p>Because he knew elephants had come across to Britain during the Roman invasions, he concluded that that was a possible explanation of the object.</p>" + "<p>The bones were identified much later as a Megalosaurus bucklandii.</p>" + "<p>Megalosaurus was the first dinosaur ever described scientifically and first theropod dinosaur discovered (this is all in hindsight, because the dinosaurs had not yet been recognized as a separate taxonomic group - the word dinosaur hadn't even been invented yet).</p>"
+						/* End DIV ---*/ + "</div>"
+						
+						// Image from dinosaurs.wikia.com
 		   },
 		   { date: new Date("1787"), 
 			 title: "First US Fossil", 
 			 lat:39.837907, lng:-75.15153,
-			 infoWin:   "<h2>Woodbury, New Jersey</h2>" + 
-						"<div><img src='images/two.jpg' /><p>The county was home to some of the most important finds during the pivotal early years in the study of palaeontology.</p></div>"
+			 infoWin:   /* Header ----*/   "<h2>Woodbury, New Jersey</h2>" 
+						/* Start DIV -*/ + "<div>"
+						/* Image -----*/ + "<img src='images/1787.jpg' />"
+						/* Paragraphs */ + "<p>The earliest documented dinosaur bones discovered in North America... In 1787, a large thighbone -- perhaps a dinosaur limb -- was found near Woodbury Creek, Gloucester County, New Jersey, in what are now known to be Late Cretaceous strata. It was reported to the American Philosophical Society on October 5 by Dr. Caspar Wistar (1761-1818) and Timothy Matlack. It has since been lost.</p>"
+						/* End DIV ---*/ + "</div>"
+						
+						// Image from http://www.nj.com/gloucester-county/towns/index.ssf/2012/04/whats_in_a_name_stewart_park_a.html, taken by Kelly Roncace
 		   },
-		   { date: new Date("1912"), 
-			 title: "Title", 
-			 lat: 3.7231, lng:10.3964,
-			 infoWin: 	"<h2>Next Headline</h2>" + 
-						"<div><img src='images/two.jpg' /><p>The county was home to some of the most important finds during the pivotal early years in the study of palaeontology.</p></div>"
+		   { date: new Date("1802"), 
+			 title: "Noah's Raven", 
+			 lat:42.258333, lng:-72.575,
+			 infoWin:   /* Header ----*/   "<h2>South Hadley, Mass.</h2>" 
+						/* Start DIV -*/ + "<div>"
+						/* Image -----*/ + "<img src='images/1802.jpg' />"
+						/* Paragraphs */ + "<p>In 1802, Pliny Moody unearthed a stone slab that had strange markings, speculated to be the tracks of Noah's raven. In the 1830's, Edward Hitchcock of Amherst College, declared them to be the tracks of ancient birds, not the tracks of Noah’s raven. After much time scientists revisited the ancient “bird tracks” and declared them to be the tracks of dinosaurs.</p>"
+						/* End DIV ---*/ + "</div>"
+						
+						// Image from http://www.nashdinosaurtracks.com/nash-dinosaur-story.php
+		   },
+		   { date: new Date("1806"), 
+			 title: "Lewis & Clark", 
+			 lat:45.995278, lng:-108.005833,
+			 infoWin:   /* Header ----*/   "<h2>Pompey's Tower, Mont.</h2>" 
+						/* Start DIV -*/ + "<div>"
+						/* Image -----*/ + "<img src='images/1806.jpg' />"
+						/* Paragraphs */ + "<p>In the course of his exploratory expedition through the recently acquired Louisiana Purchase with Meriwether Lewis in 1806, Clark noted a large rib bone in a cliff on the south bank of the YellowstoneRiver, about 6 or 7 miles below Pompy's Tower (now Pompy's Pillar) close to what would be the site of Billings, Montana. In his journal, Clark noted it as being 3 feet in length, though part of the end was broken off, and about 3 inches in circumference. He thought it to be the bone of an immense fish.</p>"
+						/* End DIV ---*/ + "</div>"
+						
+						// Image from http://lewisandclarktoday.net/7/images/pompeys_pillar_255.jpg
+		   },
+		   { date: new Date("1822"), 
+			 title: "Honey, I found a tooth!", 
+			 lat:51, lng:0,
+			 infoWin:   /* Header ----*/   "<h2>Sussex Co, England</h2>" 
+						/* Start DIV -*/ + "<div>"
+						/* Image -----*/ + "<img src='images/1822.jpg' />"
+						/* Paragraphs */ + "<p>Mary Mantell unearthed the teeth as she pulled at loose fragments of rock in Sussex. Gideon Mantell, an amateur palaeontologist, noticed they were similar to modern iguana teeth, but many times larger. Gideon had the imagination to suggest they belonged to a colossal ancient plant-eating lizard, which he named Iguanodon.</p>"
+						/* End DIV ---*/ + "</div>"
+						
+						// Image from http://www.nhm.ac.uk/nature-online/collections-at-the-museum/museum-treasures/iguanodon-teeth/
 		   },
 		   { date: new Date("2005"), 
 			 title: "Title", 
 			 lat:55.7525, lng:37.6231,
-			 infoWin: 	"<h2>Next Headline</h2>" + 
-						"<div><img src='images/two.jpg' /><p>The county was home to some of the most important finds during the pivotal early years in the study of palaeontology.</p></div>"
-		   },
-		   { date: new Date("2000"), 
-			 title: "Title", 
-			 lat:40.7484, lng:73.9857,
 			 infoWin: 	"<h2>Next Headline</h2>" + 
 						"<div><img src='images/two.jpg' /><p>The county was home to some of the most important finds during the pivotal early years in the study of palaeontology.</p></div>"
 			}];
