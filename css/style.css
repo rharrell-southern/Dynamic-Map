@@ -137,3 +137,7 @@ header h1 {
 	margin:0px -4px;
 	line-height:4px;
 }
+
+.subYears {
+	display:none;
+}
